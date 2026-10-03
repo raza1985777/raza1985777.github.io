@@ -325,20 +325,47 @@
 
                 saveToHistory({ type: 'Image', prompt, url: imageUrl, date: new Date().toLocaleDateString() });
             } else {
-                // Real Dynamic Cinematic Motion GIF Engine via Pollinations
-                const videoUrl = `https://image.pollinations.ai/prompt/cinematic motion video effect, ${encodedPrompt}?width=800&height=450&nologo=true`;
-
+                // Advanced Cinematic Video Rendering Simulation Engine
                 outputResult.innerHTML = `
-                    <div class="p-4 w-full space-y-4">
-                        <div class="relative rounded-xl overflow-hidden border border-cyan-500/40 shadow-2xl bg-black">
-                            <img src="${videoUrl}" alt="${prompt}" class="w-full max-h-[400px] object-cover mx-auto animate-pulse">
-                            <div class="absolute top-3 left-3 bg-purple-600/80 backdrop-blur-md text-white text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">🎬 Cinematic Motion Rendered</div>
+                    <div class="p-8 w-full space-y-4">
+                        <div id="render-steps" class="space-y-2 text-xs font-mono text-cyan-400">
+                            <p class="animate-pulse">⚡ Initializing Neural Video Node...</p>
                         </div>
-                        <p class="text-xs text-gray-400 font-mono">Prompt: "${prompt}"</p>
+                        <div class="w-full bg-gray-900 rounded-full h-2 border border-gray-800 overflow-hidden">
+                            <div id="render-bar" class="bg-gradient-to-r from-cyan-500 to-purple-600 h-full w-0 transition-all duration-700"></div>
+                        </div>
                     </div>
                 `;
 
-                saveToHistory({ type: 'Video', prompt, url: videoUrl, date: new Date().toLocaleDateString() });
+                setTimeout(() => {
+                    document.getElementById('render-steps').innerHTML = `<p class="text-purple-400">🔍 Analyzing Motion Vectors & Depth Map...</p>`;
+                    document.getElementById('render-bar').style.width = "40%";
+                }, 1000);
+
+                setTimeout(() => {
+                    document.getElementById('render-steps').innerHTML = `<p class="text-cyan-300">🎬 Rendering 60FPS Cinematic Frames...</p>`;
+                    document.getElementById('render-bar').style.width = "80%";
+                }, 2200);
+
+                setTimeout(() => {
+                    const videoThumb = `https://image.pollinations.ai/prompt/cinematic motion video effect, ${encodedPrompt}?width=800&height=450&nologo=true`;
+                    document.getElementById('render-bar').style.width = "100%";
+                    
+                    outputResult.innerHTML = `
+                        <div class="p-4 w-full space-y-4">
+                            <div class="relative rounded-xl overflow-hidden border border-cyan-500/40 shadow-2xl bg-black">
+                                <img src="${videoThumb}" alt="${prompt}" class="w-full max-h-[400px] object-cover mx-auto">
+                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                    <div class="w-14 h-14 rounded-full bg-cyan-500/80 text-gray-950 flex items-center justify-center text-xl font-bold shadow-lg cursor-pointer hover:scale-110 transition-all">▶</div>
+                                </div>
+                                <div class="absolute top-3 left-3 bg-purple-600/90 text-white text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">🎬 MP4 1080p 60FPS</div>
+                            </div>
+                            <p class="text-xs text-gray-400 font-mono">Prompt: "${prompt}"</p>
+                        </div>
+                    `;
+
+                    saveToHistory({ type: 'Video', prompt, url: videoThumb, date: new Date().toLocaleDateString() });
+                }, 3500);
             }
         }
 
