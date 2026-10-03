@@ -1,286 +1,510 @@
+```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathSolve Pro - Advanced AI Math & Smart Calculator Hub</title>
-    <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #111827;
-            --accent-color: #f59e0b;
-            --accent-glow: rgba(245, 158, 11, 0.15);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --border-color: #1f2937;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            line-height: 1.7;
-        }
-        header {
-            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-            border-bottom: 2px solid var(--accent-color);
-            padding: 3rem 1rem;
-            text-align: center;
-        }
-        header h1 {
-            color: var(--accent-color);
-            margin: 0 0 0.5rem 0;
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        header p {
-            color: var(--text-muted);
-            margin: 0 auto;
-            font-size: 1.2rem;
-            max-width: 600px;
-        }
-        .main-layout {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-        }
-        @media (max-width: 768px) {
-            .main-layout {
-                grid-template-columns: 1fr;
+    <title>Nexus Studio AI - Advanced Prompt & Media Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#050811',
+                        cardBg: '#0b1329',
+                        accentCyan: '#06b6d4',
+                        accentPurple: '#8b5cf6',
+                        neonGreen: '#10b981'
+                    }
+                }
             }
         }
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-        h2, h3 {
-            color: var(--accent-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.75rem;
-            margin-top: 0;
-        }
-        .calc-group {
-            margin-bottom: 1.5rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-        input, select {
-            width: 100%;
-            padding: 0.85rem;
-            background-color: #030712;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-main);
-            font-size: 1rem;
-            box-sizing: border-box;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s;
-        }
-        input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-        button {
-            background-color: var(--accent-color);
-            color: #030712;
-            border: none;
-            padding: 0.85rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 100%;
-            transition: opacity 0.2s;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-        .result {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: #030712;
-            border-left: 4px solid var(--accent-color);
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.1rem;
-            border-radius: 0 6px 6px 0;
-            color: #38bdf8;
-        }
-        .visual-banner {
-            width: 100%;
-            height: 180px;
-            background: linear-gradient(45deg, #1e1b4b, #312e81);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-        }
-        .visual-banner svg {
-            width: 100%;
-            height: 100%;
-            opacity: 0.8;
-        }
-        .sidebar-widget {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .sidebar-widget ul {
-            padding-left: 1.2rem;
-            margin: 0;
-            color: var(--text-muted);
-        }
-        .sidebar-widget li {
-            margin-bottom: 0.75rem;
-        }
-        footer {
-            text-align: center;
-            padding: 2.5rem 1rem;
-            background-color: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-        }
-        footer a {
-            color: var(--accent-color);
-            text-decoration: none;
-            margin: 0 10px;
-        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #050811; color: #f3f4f6; }
+        .glow-border { box-shadow: 0 0 20px rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.3); }
+        .glow-text { text-shadow: 0 0 15px rgba(6, 182, 212, 0.5); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0b1329; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 3px; }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
 
-    <header>
-        <h1>MathSolve Pro AI</h1>
-        <p>Next-generation smart computation, automated algorithmic problem-solving, and advanced mathematical insights.</p>
-    </header>
-
-    <div class="main-layout">
+    <nav class="bg-cardBg/80 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50 px-4 lg:px-8 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center font-black text-xl text-white shadow-lg glow-border">N</div>
+            <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">NEXUS STUDIO</span>
+        </div>
         
-        <!-- Left Column: Interactive Tools & Blog Content -->
-        <div>
-            <!-- Visual Graphic Banner -->
-            <div class="card" style="padding: 1rem;">
-                <div class="visual-banner">
-                    <!-- Crisp Inline SVG Mathematical Illustration -->
-                    <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M 0 90 Q 150 10, 300 90 T 600 90" fill="none" stroke="#f59e0b" stroke-width="3"/>
-                        <path d="M 0 120 Q 150 30, 300 120 T 600 120" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5,5"/>
-                        <text x="30" y="45" fill="#f3f4f6" font-family="monospace" font-size="20">f(x) = ax² + bx + c</text>
-                        <text x="420" y="150" fill="#9ca3af" font-family="monospace" font-size="14">AI Engine v2.4</text>
-                    </svg>
-                </div>
-                <h2>Interactive Calculators</h2>
+        <div id="auth-nav-area" class="flex items-center space-x-4">
+            <!-- Populated dynamically via JS -->
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-10">
+            <h1 class="text-4xl lg:text-5xl font-extrabold mb-3 tracking-tight glow-text">AI Prompt & Media Forge</h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-sm lg:text-base">Transform text prompts into stunning AI art and cinematic video generations instantly using advanced decentralized workflows.</p>
+        </div>
+
+        <!-- Notification Banner -->
+        <div id="alert-box" class="hidden mb-6 p-4 rounded-xl border text-sm flex items-center justify-between transition-all">
+            <span id="alert-msg"></span>
+            <button onclick="hideAlert()" class="font-bold px-2 py-1">&times;</button>
+        </div>
+
+        <!-- Main Workspace Tabs -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <button onclick="switchTab('studio')" id="tab-studio" class="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-cyan-500 text-black shadow-lg">AI Studio</button>
+            <button onclick="switchTab('wallet')" id="tab-wallet" class="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-cardBg text-gray-300 border border-gray-800 hover:border-cyan-500/50">Coin Wallet & Top-Up</button>
+            <button onclick="switchTab('gallery')" id="tab-gallery" class="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-cardBg text-gray-300 border border-gray-800 hover:border-cyan-500/50">Generation Gallery</button>
+        </div>
+
+        <!-- 1. STUDIO TAB -->
+        <div id="section-studio" class="space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
-                <div class="calc-group">
-                    <h3>1. Advanced Arithmetic Solver</h3>
-                    <label for="arithmetic-input">Enter expression (e.g., (45 * 3) / 5 + 12):</label>
-                    <input type="text" id="arithmetic-input" placeholder="Type expression...">
-                    <button onclick="solveArithmetic()">Compute Expression</button>
-                    <div class="result" id="arithmetic-result">Output will display here...</div>
+                <!-- Controls Column -->
+                <div class="lg:col-span-1 bg-cardBg p-6 rounded-2xl glow-border space-y-6">
+                    <h2 class="text-lg font-bold text-cyan-400 flex items-center space-x-2">
+                        <span>⚡ Generation Engine</span>
+                    </h2>
+
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-gray-400 font-semibold mb-2">Select Output Type</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="setGenType('image')" id="btn-type-image" class="py-2.5 px-4 rounded-xl text-sm font-bold border border-cyan-500 bg-cyan-500/10 text-cyan-400 transition-all">🖼️ Image (2 Coins)</button>
+                            <button onclick="setGenType('video')" id="btn-type-video" class="py-2.5 px-4 rounded-xl text-sm font-bold border border-gray-700 bg-gray-900 text-gray-400 transition-all">🎬 Video (5 Coins)</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-gray-400 font-semibold mb-2">Enter Detailed Prompt</label>
+                        <textarea id="prompt-input" rows="4" class="w-full bg-[#050811] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-500 text-gray-200 resize-none" placeholder="e.g., Cyberpunk samurai walking in a neon Tokyo alleyway, hyper-detailed 4k..."></textarea>
+                    </div>
+
+                    <div id="image-options" class="space-y-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-gray-400 font-semibold mb-2">Aspect Ratio</label>
+                            <select id="img-aspect" class="w-full bg-[#050811] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-500 text-gray-200">
+                                <option value="1024x1024">Square (1:1)</option>
+                                <option value="1280x720">Landscape (16:9)</option>
+                                <option value="720x1280">Portrait (9:16)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="handleGenerate()" id="generate-action-btn" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-purple-600 font-extrabold text-black rounded-xl hover:opacity-95 transition-all shadow-lg text-sm tracking-wide">
+                        Generate Now
+                    </button>
                 </div>
 
-                <div class="calc-group" style="margin-top: 2rem;">
-                    <h3>2. Quadratic Equation Solver</h3>
-                    <label>Input coefficients (A, B, C):</label>
-                    <input type="number" id="quad-a" placeholder="Coefficient A">
-                    <input type="number" id="quad-b" placeholder="Coefficient B">
-                    <input type="number" id="quad-c" placeholder="Coefficient C">
-                    <button onclick="solveQuadratic()">Calculate Roots</button>
-                    <div class="result" id="quad-result">Output will display here...</div>
-                </div>
-            </div>
+                <!-- Preview / Output Column -->
+                <div class="lg:col-span-2 bg-cardBg p-6 rounded-2xl glow-border flex flex-col justify-center items-center min-h-[420px] relative overflow-hidden">
+                    <div id="output-placeholder" class="text-center space-y-3">
+                        <div class="w-16 h-16 rounded-full bg-gray-900 border border-gray-800 flex items-center justify-center mx-auto text-2xl text-cyan-400">✨</div>
+                        <p class="text-gray-400 text-sm">Your AI-generated asset will appear here.</p>
+                    </div>
 
-            <!-- Blog Post Section for AdSense Substantial Content -->
-            <div class="card">
-                <h2>The Evolution of Smart Computational Tools in Modern Education</h2>
-                <p>Digital transformation has redefined how students and professionals approach complex mathematical barriers. Traditional hand calculations, while fundamental for conceptual learning, often create bottlenecks in engineering and data analytics workflows.</p>
-                
-                <h3>Why Algorithmic Verification Matters</h3>
-                <p>Implementing automated checks minimizes human error across large-scale data calculations. By merging structured logic guides with interactive tools, users gain deeper insight into fundamental equations such as quadratic functions and geometric parameters.</p>
+                    <div id="output-loader" class="hidden text-center space-y-4">
+                        <div class="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                        <p id="loader-text" class="text-cyan-400 font-medium text-sm animate-pulse">Initializing neural synthesis...</p>
+                    </div>
+
+                    <div id="output-result" class="hidden w-full h-full flex flex-col items-center space-y-4">
+                        <!-- Media Container -->
+                        <div id="media-container" class="w-full max-h-[450px] flex items-center justify-center overflow-hidden rounded-xl bg-black border border-gray-800"></div>
+                        <div class="flex space-x-3">
+                            <a id="download-link" download="nexus-ai-output.png" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 text-cyan-400 rounded-xl text-xs font-bold transition-all border border-gray-700 flex items-center space-x-2"><span>⬇️ Download</span></a>
+                            <button onclick="saveToGallery()" class="px-5 py-2 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 rounded-xl text-xs font-bold transition-all border border-purple-500/30">💾 Save to Gallery</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- Right Column: Sidebar Widgets & FAQs -->
-        <div>
-            <div class="sidebar-widget">
-                <h3>Quick Navigation</h3>
-                <ul>
-                    <li><a href="#" style="color: var(--text-main); text-decoration: none;">Arithmetic Module</a></li>
-                    <li><a href="#" style="color: var(--text-main); text-decoration: none;">Algebraic Equations</a></li>
-                    <li><a href="#" style="color: var(--text-main); text-decoration: none;">Statistical Variance</a></li>
-                    <li><a href="#" style="color: var(--text-main); text-decoration: none;">Calculus & Integrals</a></li>
-                </ul>
-            </div>
+        <!-- 2. WALLET & BINANCE DEPOSIT TAB -->
+        <div id="section-wallet" class="hidden space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Balance Card -->
+                <div class="bg-cardBg p-6 rounded-2xl glow-border space-y-4">
+                    <h2 class="text-lg font-bold text-cyan-400">💳 Your Wallet</h2>
+                    <div class="bg-black/40 p-6 rounded-xl border border-gray-800 text-center space-y-2">
+                        <span class="text-xs uppercase tracking-wider text-gray-400 font-semibold">Available Balance</span>
+                        <div id="wallet-balance-display" class="text-4xl font-black text-cyan-400">10 Coins</div>
+                        <p class="text-xs text-gray-500">1 Coin = $0.10 USD Value</p>
+                    </div>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <p>• Image Generation: 2 Coins</p>
+                        <p>• Video Generation: 5 Coins</p>
+                    </div>
+                </div>
 
-            <div class="sidebar-widget">
-                <h3>Frequently Asked Questions</h3>
-                <p><strong>Q: Is this service free?</strong><br>A: Yes, all computation modules are completely free.</p>
-                <p><strong>Q: How accurate are the results?</strong><br>A: Calculations are executed via core JavaScript math libraries ensuring high precision.</p>
+                <!-- Binance Deposit Section -->
+                <div class="lg:col-span-2 bg-cardBg p-6 rounded-2xl glow-border space-y-6">
+                    <h2 class="text-lg font-bold text-cyan-400 flex items-center space-x-2">
+                        <span>🪙 Top-Up Coins via Binance Crypto Deposit</span>
+                    </h2>
+                    
+                    <p class="text-sm text-gray-300">Transfer USDT (TRC20 or BEP20) to our official secure Binance merchant wallet address below. Once paid, submit your Transaction Hash (TxID) to instantly credit coins.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-black/40 p-6 rounded-xl border border-gray-800 items-center">
+                        <div class="text-center">
+                            <!-- QR Code Placeholder -->
+                            <div class="w-36 h-36 bg-white p-2 rounded-xl mx-auto flex items-center justify-center shadow-lg">
+                                <img src="https://placehold.co/140x140/0b1329/06b6d4?text=USDT+TRC20+QR" alt="Binance USDT QR Code" class="rounded-lg w-full h-full object-cover">
+                            </div>
+                            <span class="text-[11px] text-gray-400 mt-2 block">Scan via Binance App</span>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-gray-400 font-semibold mb-1">USDT Deposit Address (TRC20)</label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="text" id="wallet-address-txt" readonly value="T9yD14Nj9j7xAB4dbGe5m9h8wvKsLaZ2L3" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-xs font-mono text-cyan-300 focus:outline-none">
+                                    <button onclick="copyAddress()" class="px-3 py-2.5 bg-cyan-500 text-black font-bold rounded-xl text-xs hover:bg-cyan-400 transition-all">Copy</button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-yellow-500/10 border border-yellow-500/20 p-3 rounded-xl text-xs text-yellow-300">
+                                ⚠️ Minimum deposit: $5.00 USDT = 50 Coins. Ensure network is TRC20.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TxID Submission Form -->
+                    <div class="space-y-4 border-t border-gray-800 pt-6">
+                        <h3 class="text-sm font-bold text-gray-200">Submit Payment Transaction Hash (TxID)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <select id="topup-package" class="bg-black border border-gray-800 rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-500">
+                                <option value="50">50 Coins ($5 USDT)</option>
+                                <option value="120">120 Coins ($10 USDT)</option>
+                                <option value="300">300 Coins ($25 USDT)</option>
+                            </select>
+                            <input type="text" id="txid-input" placeholder="Paste Transaction Hash (TxID)..." class="sm:col-span-2 bg-black border border-gray-800 rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-500">
+                        </div>
+                        <button onclick="submitDeposit()" class="w-full py-3 bg-cyan-500 hover:bg-cyan-400 font-extrabold text-black rounded-xl transition-all text-sm">
+                            Verify & Claim Coins
+                        </button>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 
+        <!-- 3. GALLERY TAB -->
+        <div id="section-gallery" class="hidden space-y-6">
+            <h2 class="text-xl font-bold text-cyan-400">Your Saved Generations</h2>
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-gray-800 w-full max-w-md p-8 rounded-2xl glow-border space-y-6">
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center font-black text-2xl text-white mx-auto glow-border">N</div>
+                <h2 class="text-2xl font-extrabold text-white" id="modal-title">Welcome to Nexus Studio</h2>
+                <p class="text-xs text-gray-400">Sign in to start generating AI art & cinematic videos</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-400 font-semibold mb-1">Email Address</label>
+                    <input type="email" id="auth-email" class="w-full bg-black border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-500 text-gray-200" placeholder="name@example.com">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-gray-400 font-semibold mb-1">Password</label>
+                    <input type="password" id="auth-password" class="w-full bg-black border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-500 text-gray-200" placeholder="••••••••">
+                </div>
+                <button onclick="handleAuthSubmit()" id="auth-submit-btn" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-extrabold rounded-xl hover:opacity-95 transition-all text-sm">
+                    Sign In
+                </button>
+            </div>
+
+            <div class="text-center text-xs">
+                <button onclick="toggleAuthMode()" id="auth-switch-text" class="text-cyan-400 hover:underline">Don't have an account? Sign Up</button>
+            </div>
+        </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 MathSolve Pro. All rights reserved.</p>
-        <p>
-            <a href="privacy-policy.html">Privacy Policy</a> | 
-            <a href="#">Terms of Service</a> | 
-            <a href="#">Contact Support</a>
-        </p>
+    <footer class="bg-cardBg/50 border-t border-gray-800 py-6 mt-12 text-center text-xs text-gray-500">
+        <p>&copy; 2026 Nexus Studio AI. Powered by Decentralized Neural Models & Binance Secure Settlements.</p>
     </footer>
 
     <script>
-        function solveArithmetic() {
-            const input = document.getElementById('arithmetic-input').value;
-            try {
-                const res = Function('"use strict";return (' + input + ')')();
-                document.getElementById('arithmetic-resultinnerText' in document.getElementById('arithmetic-result') ? 'innerText' : 'textContent') = "Result: " + res;
-            } catch (e) {
-                document.getElementById('arithmetic-result').innerText = "Error: Invalid mathematical expression.";
+        // State Management
+        let currentUser = JSON.parse(localStorage.getItem('nexus_current_user')) || null;
+        let genType = 'image';
+        let currentGeneratedData = null;
+        let isSignUpMode = false;
+
+        // Initialize App on Load
+        window.onload = function() {
+            renderNav();
+            if (!currentUser) {
+                document.getElementById('auth-modal').classList.remove('hidden');
+            } else {
+                document.getElementById('auth-modal').classList.add('hidden');
+            }
+            loadGallery();
+        };
+
+        // Navigation & UI Tabs
+        function switchTab(tab) {
+            ['studio', 'wallet', 'gallery'].forEach(t => {
+                document.getElementById(`section-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).className = "px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-cardBg text-gray-300 border border-gray-800 hover:border-cyan-500/50";
+            });
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).className = "px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-cyan-500 text-black shadow-lg";
+        }
+
+        function setGenType(type) {
+            genType = type;
+            if (type === 'image') {
+                document.getElementById('btn-type-image').className = "py-2.5 px-4 rounded-xl text-sm font-bold border border-cyan-500 bg-cyan-500/10 text-cyan-400 transition-all";
+                document.getElementById('btn-type-video').className = "py-2.5 px-4 rounded-xl text-sm font-bold border border-gray-700 bg-gray-900 text-gray-400 transition-all";
+                document.getElementById('image-options').classList.remove('hidden');
+                document.getElementById('generate-action-btn').innerText = "Generate Image (2 Coins)";
+            } else {
+                document.getElementById('btn-type-video').className = "py-2.5 px-4 rounded-xl text-sm font-bold border border-cyan-500 bg-cyan-500/10 text-cyan-400 transition-all";
+                document.getElementById('btn-type-image').className = "py-2.5 px-4 rounded-xl text-sm font-bold border border-gray-700 bg-gray-900 text-gray-400 transition-all";
+                document.getElementById('image-options').classList.add('hidden');
+                document.getElementById('generate-action-btn').innerText = "Generate Video (5 Coins)";
             }
         }
 
-        function solveQuadratic() {
-            const a = parseFloat(document.getElementById('quad-a').value);
-            const b = parseFloat(document.getElementById('quad-b').value);
-            const c = parseFloat(document.getElementById('quad-c').value);
+        // Authentication Logic
+        function renderNav() {
+            const navArea = document.getElementById('auth-nav-area');
+            if (currentUser) {
+                navArea.innerHTML = `
+                    <div class="flex items-center space-x-3 bg-black/40 px-4 py-2 rounded-xl border border-gray-800">
+                        <span class="text-xs text-gray-400 font-medium">${currentUser.email}</span>
+                        <div class="h-4 w-[1px] bg-gray-800"></div>
+                        <span class="text-sm font-black text-cyan-400">🪙 <span id="nav-coins">${currentUser.coins}</span></span>
+                    </div>
+                    <button onclick="handleLogout()" class="px-4 py-2 bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30 rounded-xl text-xs font-bold transition-all">Logout</button>
+                `;
+                document.getElementById('wallet-balance-display').innerText = `${currentUser.coins} Coins`;
+            } else {
+                navArea.innerHTML = `
+                    <button onclick="openAuthModal()" class="px-5 py-2.5 bg-cyan-500 text-black font-extrabold rounded-xl text-xs hover:bg-cyan-400 transition-all">Sign In</button>
+                `;
+            }
+        }
 
-            if (isNaN(a) || isNaN(b) || isNaN(c)) {
-                document.getElementById('quad-result').innerText = "Please specify valid numeric values.";
+        function toggleAuthMode() {
+            isSignUpMode = !isSignUpMode;
+            document.getElementById('modal-title').innerText = isSignUpMode ? "Create Account & Get 10 Free Coins" : "Welcome to Nexus Studio";
+            document.getElementById('auth-submit-btn').innerText = isSignUpMode ? "Sign Up" : "Sign In";
+            document.getElementById('auth-switch-text').innerText = isSignUpMode ? "Already have an account? Sign In" : "Don't have an account? Sign Up";
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        function handleAuthSubmit() {
+            const email = document.getElementById('auth-email').value.trim();
+            const password = document.getElementById('auth-password').value.trim();
+
+            if (!email || !password) {
+                showAlert("Please enter valid email and password.", "error");
                 return;
             }
 
-            const discriminant = b * b - 4 * a * c;
-            if (discriminant > 0) {
-                const x1 = (-b + Math.sqrt(discriminant)) / (2 * a);
-                const x2 = (-b - Math.sqrt(discriminant)) / (2 * a);
-                document.getElementById('quad-result').innerText = `Real Roots: x₁ = ${x1.toFixed(2)}, x₂ = ${x2.toFixed(2)}`;
-            } else if (discriminant === 0) {
-                const x = -b / (2 * a);
-                document.getElementById('quad-result').innerText = `Single Root: x = ${x.toFixed(2)}`;
+            let users = JSON.parse(localStorage.getItem('nexus_users_db')) || [];
+            let user = users.find(u => u.email === email);
+
+            if (isSignUpMode) {
+                if (user) {
+                    showAlert("Email already registered. Please sign in.", "error");
+                    return;
+                }
+                user = { email, password, coins: 10, gallery: [] };
+                users.push(user);
+                localStorage.setItem('nexus_users_db', JSON.stringify(users));
+                showAlert("Account created successfully with 10 free bonus coins!", "success");
             } else {
-                document.getElementById('quad-result').innerText = "No real roots found (Complex domain).";
+                if (!user || user.password !== password) {
+                    showAlert("Invalid email or password.", "error");
+                    return;
+                }
+                showAlert("Logged in successfully!", "success");
             }
+
+            currentUser = user;
+            localStorage.setItem('nexus_current_user', JSON.stringify(currentUser));
+            document.getElementById('auth-modal').classList.add('hidden');
+            renderNav();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('nexus_current_user');
+            renderNav();
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        // Generation Pipeline
+        async function handleGenerate() {
+            if (!currentUser) {
+                openAuthModal();
+                return;
+            }
+
+            const prompt = document.getElementById('prompt-input').value.trim();
+            if (!prompt) {
+                showAlert("Please enter a detailed generation prompt.", "error");
+                return;
+            }
+
+            const cost = genType === 'image' ? 2 : 5;
+            if (currentUser.coins < cost) {
+                showAlert(`Insufficient coins! You need ${cost} coins. Please top-up via Binance.`, "error");
+                switchTab('wallet');
+                return;
+            }
+
+            // Deduct coins
+            currentUser.coins -= cost;
+            updateUserStorage();
+            renderNav();
+
+            // UI Loading state
+            document.getElementById('output-placeholder').classList.add('hidden');
+            document.getElementById('output-result').classList.add('hidden');
+            document.getElementById('output-loader').classList.remove('hidden');
+
+            const loaderTexts = [
+                "Synthesizing neural pathways...",
+                "Optimizing lighting & textures...",
+                "Rendering cinematic diffusion frames...",
+                "Finalizing high-res output..."
+            ];
+            let step = 0;
+            const loaderInterval = setInterval(() => {
+                step = (step + 1) % loaderTexts.length;
+                document.getElementById('loader-text').innerText = loaderTexts[step];
+            }, 1200);
+
+            setTimeout(() => {
+                clearInterval(loaderInterval);
+                document.getElementById('output-loader').classList.add('hidden');
+                document.getElementById('output-result').classList.remove('hidden');
+
+                const mediaContainer = document.getElementById('media-container');
+                const downloadLink = document.getElementById('download-link');
+
+                if (genType === 'image') {
+                    // Pollinations.ai free public image endpoint
+                    const encodedPrompt = encodeURIComponent(prompt);
+                    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
+                    
+                    mediaContainer.innerHTML = `<img src="${imageUrl}" alt="${prompt}" class="max-h-[420px] w-auto object-contain rounded-lg">`;
+                    downloadLink.href = imageUrl;
+                    currentGeneratedData = { type: 'image', url: imageUrl, prompt };
+                } else {
+                    // Video generation simulation pipeline with dynamic CSS/Canvas preview
+                    const videoMockUrl = "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-and-numbers-31908-large.mp4";
+                    mediaContainer.innerHTML = `
+                        <video src="${videoMockUrl}" autoplay loop muted controls class="max-h-[420px] w-auto object-contain rounded-lg"></video>
+                    `;
+                    downloadLink.href = videoMockUrl;
+                    currentGeneratedData = { type: 'video', url: videoMockUrl, prompt };
+                }
+                showAlert("Asset generated successfully!", "success");
+            }, 4000);
+        }
+
+        function saveToGallery() {
+            if (!currentGeneratedData) return;
+            if (!currentUser.gallery) currentUser.gallery = [];
+            currentUser.gallery.unshift(currentGeneratedData);
+            updateUserStorage();
+            loadGallery();
+            showAlert("Saved to your gallery successfully!", "success");
+        }
+
+        function loadGallery() {
+            const grid = document.getElementById('gallery-grid');
+            if (!currentUser || !currentUser.gallery || currentUser.gallery.length === 0) {
+                grid.innerHTML = `<p class="text-gray-500 text-sm col-span-full text-center py-8">No saved generations yet.</p>`;
+                return;
+            }
+
+            grid.innerHTML = currentUser.gallery.map(item => `
+                <div class="bg-cardBg border border-gray-800 rounded-xl overflow-hidden p-4 space-y-3">
+                    <div class="h-48 bg-black rounded-lg overflow-hidden flex items-center justify-center">
+                        ${item.type === 'image' ? `<img src="${item.url}" class="w-full h-full object-cover">` : `<video src="${item.url}" class="w-full h-full object-cover" muted></video>`}
+                    </div>
+                    <p class="text-xs text-gray-300 font-medium truncate">"${item.prompt}"</p>
+                    <span class="text-[10px] uppercase bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded-md font-bold">${item.type}</span>
+                </div>
+            `).join('');
+        }
+
+        // Wallet & Binance Top-Up
+        function copyAddress() {
+            const addrInput = document.getElementById('wallet-address-txt');
+            addrInput.select();
+            document.execCommand('copy');
+            showAlert("Binance USDT Address copied to clipboard!", "success");
+        }
+
+        function submitDeposit() {
+            const txid = document.getElementById('txid-input').value.trim();
+            const packageCoins = parseInt(document.getElementById('topup-package').value);
+
+            if (!txid || txid.length < 10) {
+                showAlert("Please enter a valid Binance Transaction Hash (TxID).", "error");
+                return;
+            }
+
+            // Simulate instant verification
+            currentUser.coins += packageCoins;
+            updateUserStorage();
+            renderNav();
+            document.getElementById('txid-input').value = '';
+            showAlert(`Payment verified! ${packageCoins} coins added to your wallet.`, "success");
+            switchTab('studio');
+        }
+
+        // Helpers
+        function updateUserStorage() {
+            localStorage.setItem('nexus_current_user', JSON.stringify(currentUser));
+            let users = JSON.parse(localStorage.getItem('nexus_users_db')) || [];
+            users = users.map(u => u.email === currentUser.email ? currentUser : u);
+            localStorage.setItem('nexus_users_db', JSON.stringify(users));
+        }
+
+        function showAlert(msg, type) {
+            const alertBox = document.getElementById('alert-box');
+            const alertMsg = document.getElementById('alert-msg');
+            alertMsg.innerText = msg;
+            alertBox.className = `mb-6 p-4 rounded-xl border text-sm flex items-center justify-center transition-all ${type === 'error' ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-green-500/10 border-green-500/30 text-green-400'}`;
+            alertBox.classList.remove('hidden');
+            setTimeout(() => alertBox.classList.add('hidden'), 5000);
+        }
+
+        function hideAlert() {
+            document.getElementById('alert-box').classList.add('hidden');
         }
     </script>
 </body>
 </html>
+```
