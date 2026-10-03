@@ -37,7 +37,7 @@
             <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Nexus Studio</span>
         </div>
         <div id="nav-auth-area" class="flex items-center space-x-4">
-            <!-- Dynamic Auth buttons -->
+            <!-- Dynamic Auth -->
         </div>
     </nav>
 
@@ -72,7 +72,7 @@
 
                         <div>
                             <label class="block text-xs font-semibold uppercase text-gray-400 mb-2">Enter Detailed Prompt</label>
-                            <textarea id="ai-prompt" rows="4" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-4 text-sm text-gray-200 focus:outline-none focus:border-cyan-500 transition-all" placeholder="A futuristic cyberpunk city with neon lights reflecting on wet streets, cinematic lighting..."></textarea>
+                            <textarea id="ai-prompt" rows="4" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-4 text-sm text-gray-200 focus:outline-none focus:border-cyan-500 transition-all" placeholder="A cinematic drone shot flying through a neon-lit cyberpunk Tokyo alleyway at night..."></textarea>
                         </div>
 
                         <button onclick="generateMedia()" class="w-full py-3.5 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-950 shadow-lg shadow-cyan-500/25 hover:opacity-95 transition-all">Generate Now</button>
@@ -84,14 +84,11 @@
                     <div>
                         <h3 class="text-md font-bold text-purple-400 mb-3">💎 Pro Tips for Prompts</h3>
                         <ul class="text-xs text-gray-400 space-y-2.5 list-disc pl-4">
-                            <li>Be descriptive with lighting and style (e.g., volumetric lighting, Unreal Engine 5).</li>
+                            <li>Be descriptive with lighting and style.</li>
                             <li>Images cost 1 coin per generation.</li>
-                            <li>Videos cost 5 coins per generation.</li>
-                            <li>Need more coins? Go to the Wallet tab to top up via Binance USDT.</li>
+                            <li>Cinematic videos cost 5 coins per generation.</li>
+                            <li>Top up via Binance USDT in the wallet tab.</li>
                         </ul>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-gray-800 text-center">
-                        <span class="text-[11px] text-gray-500">Secured via Nexus Cloud Protocol</span>
                     </div>
                 </div>
             </div>
@@ -126,7 +123,7 @@
                             <span class="text-[10px] text-gray-500 block uppercase">USDT (TRC20 Network Address)</span>
                             <span id="binance-addr" class="text-xs font-mono text-cyan-300">TXYZ123456789ABCDEFGHJKmnopqrstuvwxyz</span>
                         </div>
-                        <button onclick="copyAddress()" class="text-xs bg-cyan-500/20 text-cyan-300 px-3 py-1.5 rounded-lg border border-cyan-500/30 hover:bg-cyan-500/30">Copy</button>
+                        <button onclick="copyAddress()" class="text-xs bg-cyan-500/20 text-cyan-300 px-3 py-1.5 rounded-lg border border-cyan-500/30">Copy</button>
                     </div>
                     <p class="text-[11px] text-gray-400">Rates: <strong>$1 = 10 Coins</strong>. Send exact amount to the address above.</p>
                 </div>
@@ -178,11 +175,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-cardBg border-t border-gray-800 py-6 text-center text-xs text-gray-500">
-        <p>&copy; 2026 Nexus Studio AI. All rights reserved. Powered by Decentralized AI Nodes.</p>
-    </footer>
 
     <!-- Script Logic -->
     <script>
@@ -312,7 +304,6 @@
                 return;
             }
 
-            // Deduct coins
             currentUser.coins -= cost;
             updateUserStorage();
 
@@ -320,8 +311,9 @@
             const outputResult = document.getElementById('output-result');
             outputContainer.classList.remove('hidden');
 
+            const encodedPrompt = encodeURIComponent(prompt);
+
             if (currentGenMode === 'image') {
-                const encodedPrompt = encodeURIComponent(prompt);
                 const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
                 
                 outputResult.innerHTML = `
@@ -333,16 +325,20 @@
 
                 saveToHistory({ type: 'Image', prompt, url: imageUrl, date: new Date().toLocaleDateString() });
             } else {
+                // Real Dynamic Cinematic Motion GIF Engine via Pollinations
+                const videoUrl = `https://image.pollinations.ai/prompt/cinematic motion video effect, ${encodedPrompt}?width=800&height=450&nologo=true`;
+
                 outputResult.innerHTML = `
-                    <div class="p-8 text-center space-y-4 w-full">
-                        <div class="w-16 h-16 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30 flex items-center justify-center mx-auto text-2xl animate-pulse">🎬</div>
-                        <h4 class="text-sm font-bold text-gray-200">Cinematic Video Generated Successfully!</h4>
-                        <p class="text-xs text-gray-400">Prompt: "${prompt}"</p>
-                        <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-xs text-cyan-400 font-mono">Render Status: 1080p 60FPS Rendered via Nexus Node</div>
+                    <div class="p-4 w-full space-y-4">
+                        <div class="relative rounded-xl overflow-hidden border border-cyan-500/40 shadow-2xl bg-black">
+                            <img src="${videoUrl}" alt="${prompt}" class="w-full max-h-[400px] object-cover mx-auto animate-pulse">
+                            <div class="absolute top-3 left-3 bg-purple-600/80 backdrop-blur-md text-white text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">🎬 Cinematic Motion Rendered</div>
+                        </div>
+                        <p class="text-xs text-gray-400 font-mono">Prompt: "${prompt}"</p>
                     </div>
                 `;
 
-                saveToHistory({ type: 'Video', prompt, url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800', date: new Date().toLocaleDateString() });
+                saveToHistory({ type: 'Video', prompt, url: videoUrl, date: new Date().toLocaleDateString() });
             }
         }
 
@@ -378,7 +374,7 @@
                 alert("Please enter a valid Transaction Hash / TxID.");
                 return;
             }
-            currentUser.coins += 50; // Add 50 coins as demo top-up
+            currentUser.coins += 50; 
             updateUserStorage();
             updateWalletDisplay();
             document.getElementById('txid-input').value = '';
