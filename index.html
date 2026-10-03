@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Studio AI - Ultra HD Art Generator</title>
+    <title>Nexus Studio AI - Sharp HD Art Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -25,6 +25,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f3f4f6; }
         .glow-border { box-shadow: 0 0 20px rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.3); }
+        .crisp-image { image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between bg-darkBg text-gray-100">
@@ -56,17 +57,17 @@
                 <!-- Prompt Controls -->
                 <div class="lg:col-span-2 bg-cardBg border border-gray-800 rounded-2xl p-6 glow-border">
                     <h2 class="text-lg font-bold text-cyan-400 mb-4 flex items-center justify-between">
-                        <span>✨ Ultra HD AI Generator</span>
+                        <span>✨ AI Art Studio</span>
                         <span id="user-coins-badge" class="text-xs bg-cyan-950 text-cyan-300 px-3 py-1 rounded-full border border-cyan-800">🪙 0 Coins</span>
                     </h2>
                     
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-semibold uppercase text-gray-400 mb-2">Enter Detailed Prompt</label>
-                            <textarea id="ai-prompt" rows="4" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-4 text-sm text-gray-200 focus:outline-none focus:border-cyan-500 transition-all" placeholder="A beautiful girl standing on a mountain peak, clear sharp facial features..."></textarea>
+                            <textarea id="ai-prompt" rows="4" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-4 text-sm text-gray-200 focus:outline-none focus:border-cyan-500 transition-all" placeholder="Close up portrait of a girl, highly detailed sharp face, 8k resolution..."></textarea>
                         </div>
 
-                        <button onclick="generateImage()" class="w-full py-3.5 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-950 shadow-lg shadow-cyan-500/25 hover:opacity-95 transition-all">Generate Ultra HD Image (1 Coin)</button>
+                        <button onclick="generateImage()" class="w-full py-3.5 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-950 shadow-lg shadow-cyan-500/25 hover:opacity-95 transition-all">Generate Sharp Image (1 Coin)</button>
                     </div>
                 </div>
 
@@ -75,8 +76,8 @@
                     <div>
                         <h3 class="text-md font-bold text-purple-400 mb-3">💎 Pro Tips for Best Results</h3>
                         <ul class="text-xs text-gray-400 space-y-2.5 list-disc pl-4">
-                            <li>Face clarity booster is now automatically active.</li>
-                            <li>Each image generation costs 1 coin.</li>
+                            <li>Image rendering has been upgraded to crisp HD pixels.</li>
+                            <li>Each generation costs exactly 1 coin.</li>
                             <li>Top up via Binance USDT in the wallet tab anytime.</li>
                         </ul>
                     </div>
@@ -86,7 +87,7 @@
             <!-- Output Display -->
             <div id="output-container" class="hidden bg-cardBg border border-gray-800 rounded-2xl p-6 glow-border text-center">
                 <h3 class="text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">Generation Output</h3>
-                <div id="output-result" class="flex justify-center items-center min-h-[300px] bg-gray-950 rounded-xl border border-gray-800 overflow-hidden relative">
+                <div id="output-result" class="flex justify-center items-center min-h-[300px] bg-gray-950 rounded-xl border border-gray-800 overflow-hidden relative p-4">
                     <!-- Result goes here -->
                 </div>
             </div>
@@ -145,7 +146,7 @@
             <div class="text-center mb-6">
                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center font-bold text-2xl text-white mx-auto mb-3 shadow-lg">N</div>
                 <h2 id="auth-title" class="text-xl font-bold text-gray-100">Welcome to Nexus Studio</h2>
-                <p id="auth-subtitle" class="text-xs text-gray-400 mt-1">Sign in to start generating Ultra HD AI art</p>
+                <p id="auth-subtitle" class="text-xs text-gray-400 mt-1">Sign in to start generating AI art</p>
             </div>
 
             <div class="space-y-4">
@@ -208,7 +209,7 @@
                 toggleBtn.innerText = "Already have an account? Sign In";
             } else {
                 title.innerText = "Welcome to Nexus Studio";
-                subtitle.innerText = "Sign in to start generating Ultra HD AI art";
+                subtitle.innerText = "Sign in to start generating AI art";
                 btn.innerText = "Sign In";
                 toggleBtn.innerText = "Don't have an account? Sign Up";
             }
@@ -289,19 +290,17 @@
             const outputResult = document.getElementById('output-result');
             outputContainer.classList.remove('hidden');
 
-            // Auto Enhance Prompt for Ultra HD & Sharp Facial Details
-            const enhancedPrompt = `${userPrompt}, ultra detailed, sharp crystal clear facial features, highly detailed face, professional photography, 8k resolution, masterpiece`;
-            const encodedPrompt = encodeURIComponent(enhancedPrompt);
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1280&height=1280&nologo=true`;
+            const encodedPrompt = encodeURIComponent(userPrompt + ", highly detailed face, sharp focus, 4k uhd");
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
             
             outputResult.innerHTML = `
-                <div class="p-4 w-full">
-                    <img src="${imageUrl}" alt="${userPrompt}" class="max-h-[500px] mx-auto rounded-xl shadow-2xl mb-4 object-contain">
+                <div class="w-full flex flex-col items-center">
+                    <img src="${imageUrl}" alt="${userPrompt}" class="max-h-[500px] w-auto mx-auto rounded-xl shadow-2xl mb-3 crisp-image object-contain">
                     <p class="text-xs text-gray-400 font-mono">Prompt: "${userPrompt}"</p>
                 </div>
             `;
 
-            saveToHistory({ type: 'Ultra HD Image', prompt: userPrompt, url: imageUrl, date: new Date().toLocaleDateString() });
+            saveToHistory({ type: 'HD Image', prompt: userPrompt, url: imageUrl, date: new Date().toLocaleDateString() });
         }
 
         function saveToHistory(item) {
@@ -353,7 +352,7 @@
 
             grid.innerHTML = currentUser.history.map(item => `
                 <div class="bg-cardBg border border-gray-800 rounded-xl overflow-hidden p-4 space-y-3">
-                    <img src="${item.url}" class="w-full h-40 object-cover rounded-lg bg-gray-950">
+                    <img src="${item.url}" class="w-full h-40 object-cover rounded-lg bg-gray-950 crisp-image">
                     <div class="flex justify-between items-center text-xs">
                         <span class="bg-cyan-500/10 text-cyan-300 px-2 py-0.5 rounded border border-cyan-500/20">${item.type}</span>
                         <span class="text-gray-500">${item.date}</span>
