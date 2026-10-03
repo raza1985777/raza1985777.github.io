@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Studio AI - Advanced Prompt & Media Generator</title>
+    <title>Nexus Studio AI - AI Image & Art Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -25,7 +25,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f3f4f6; }
         .glow-border { box-shadow: 0 0 20px rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.3); }
-        .glow-text { text-shadow: 0 0 15px rgba(6, 182, 212, 0.3); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between bg-darkBg text-gray-100">
@@ -46,7 +45,7 @@
         
         <!-- Tabs -->
         <div id="app-tabs" class="hidden flex flex-wrap justify-center gap-2 mb-8">
-            <button onclick="switchTab('studio')" id="tab-studio" class="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-cyan-500 text-gray-950 shadow-lg shadow-cyan-500/20">AI Studio</button>
+            <button onclick="switchTab('studio')" id="tab-studio" class="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-cyan-500 text-gray-950 shadow-lg shadow-cyan-500/20">AI Art Studio</button>
             <button onclick="switchTab('wallet')" id="tab-wallet" class="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-cardBg border border-gray-800 text-gray-300 hover:text-white">Coin Wallet</button>
             <button onclick="switchTab('gallery')" id="tab-gallery" class="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-cardBg border border-gray-800 text-gray-300 hover:text-white">My Generations</button>
         </div>
@@ -57,25 +56,17 @@
                 <!-- Prompt Controls -->
                 <div class="lg:col-span-2 bg-cardBg border border-gray-800 rounded-2xl p-6 glow-border">
                     <h2 class="text-lg font-bold text-cyan-400 mb-4 flex items-center justify-between">
-                        <span>✨ AI Media Generator</span>
+                        <span>✨ AI Image Generator</span>
                         <span id="user-coins-badge" class="text-xs bg-cyan-950 text-cyan-300 px-3 py-1 rounded-full border border-cyan-800">🪙 0 Coins</span>
                     </h2>
                     
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase text-gray-400 mb-2">Select Generation Mode</label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <button id="mode-image" onclick="setMode('image')" class="py-2.5 px-4 rounded-xl text-sm font-bold border border-cyan-500 bg-cyan-500/10 text-cyan-300 transition-all">🖼️ AI Image (1 Coin)</button>
-                                <button id="mode-video" onclick="setMode('video')" class="py-2.5 px-4 rounded-xl text-sm font-bold border border-gray-800 bg-gray-900 text-gray-400 transition-all">🎬 Cinematic Video (5 Coins)</button>
-                            </div>
-                        </div>
-
-                        <div>
                             <label class="block text-xs font-semibold uppercase text-gray-400 mb-2">Enter Detailed Prompt</label>
-                            <textarea id="ai-prompt" rows="4" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-4 text-sm text-gray-200 focus:outline-none focus:border-cyan-500 transition-all" placeholder="A cinematic drone shot flying through a neon-lit cyberpunk Tokyo alleyway at night..."></textarea>
+                            <textarea id="ai-prompt" rows="4" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-4 text-sm text-gray-200 focus:outline-none focus:border-cyan-500 transition-all" placeholder="A cinematic neon-lit cyberpunk Tokyo alleyway at night, heavy rain reflecting glowing signs..."></textarea>
                         </div>
 
-                        <button onclick="generateMedia()" class="w-full py-3.5 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-950 shadow-lg shadow-cyan-500/25 hover:opacity-95 transition-all">Generate Now</button>
+                        <button onclick="generateImage()" class="w-full py-3.5 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 text-gray-950 shadow-lg shadow-cyan-500/25 hover:opacity-95 transition-all">Generate Image (1 Coin)</button>
                     </div>
                 </div>
 
@@ -84,10 +75,9 @@
                     <div>
                         <h3 class="text-md font-bold text-purple-400 mb-3">💎 Pro Tips for Prompts</h3>
                         <ul class="text-xs text-gray-400 space-y-2.5 list-disc pl-4">
-                            <li>Be descriptive with lighting and style.</li>
-                            <li>Images cost 1 coin per generation.</li>
-                            <li>Cinematic videos cost 5 coins per generation.</li>
-                            <li>Top up via Binance USDT in the wallet tab.</li>
+                            <li>Be descriptive with lighting and style details.</li>
+                            <li>Each image generation costs exactly 1 coin.</li>
+                            <li>Top up via Binance USDT in the wallet tab if you run out of coins.</li>
                         </ul>
                     </div>
                 </div>
@@ -132,7 +122,7 @@
                     <h3 class="text-sm font-semibold text-purple-400">Step 2: Submit Transaction Hash (TxID)</h3>
                     <div>
                         <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Transaction ID / Hash</label>
-                        <input type="text" id="txid-input" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-500" placeholder="Paste your 64-character transaction hash here...">
+                        <input type="text" id="txid-input" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-500" placeholder="Paste your transaction hash here...">
                     </div>
                     <button onclick="submitDeposit()" class="w-full py-3 rounded-xl font-bold bg-cyan-500 text-gray-950 hover:bg-cyan-400 transition-all">Verify & Claim Coins</button>
                 </div>
@@ -155,7 +145,7 @@
             <div class="text-center mb-6">
                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center font-bold text-2xl text-white mx-auto mb-3 shadow-lg">N</div>
                 <h2 id="auth-title" class="text-xl font-bold text-gray-100">Welcome to Nexus Studio</h2>
-                <p id="auth-subtitle" class="text-xs text-gray-400 mt-1">Sign in to start generating AI art & cinematic videos</p>
+                <p id="auth-subtitle" class="text-xs text-gray-400 mt-1">Sign in to start generating stunning AI art</p>
             </div>
 
             <div class="space-y-4">
@@ -180,7 +170,6 @@
     <script>
         let currentUser = JSON.parse(localStorage.getItem('nexus_current_user')) || null;
         let isSignUpMode = false;
-        let currentGenMode = 'image';
 
         function initApp() {
             const authModal = document.getElementById('auth-modal');
@@ -219,7 +208,7 @@
                 toggleBtn.innerText = "Already have an account? Sign In";
             } else {
                 title.innerText = "Welcome to Nexus Studio";
-                subtitle.innerText = "Sign in to start generating AI art & cinematic videos";
+                subtitle.innerText = "Sign in to start generating stunning AI art";
                 btn.innerText = "Sign In";
                 toggleBtn.innerText = "Don't have an account? Sign Up";
             }
@@ -279,27 +268,16 @@
             if (tabName === 'wallet') updateWalletDisplay();
         }
 
-        function setMode(mode) {
-            currentGenMode = mode;
-            if (mode === 'image') {
-                document.getElementById('mode-image').className = "py-2.5 px-4 rounded-xl text-sm font-bold border border-cyan-500 bg-cyan-500/10 text-cyan-300 transition-all";
-                document.getElementById('mode-video').className = "py-2.5 px-4 rounded-xl text-sm font-bold border border-gray-800 bg-gray-900 text-gray-400 transition-all";
-            } else {
-                document.getElementById('mode-video').className = "py-2.5 px-4 rounded-xl text-sm font-bold border border-cyan-500 bg-cyan-500/10 text-cyan-300 transition-all";
-                document.getElementById('mode-image').className = "py-2.5 px-4 rounded-xl text-sm font-bold border border-gray-800 bg-gray-900 text-gray-400 transition-all";
-            }
-        }
-
-        function generateMedia() {
+        function generateImage() {
             const prompt = document.getElementById('ai-prompt').value.trim();
             if (!prompt) {
                 alert("Please enter a prompt description.");
                 return;
             }
 
-            const cost = currentGenMode === 'image' ? 1 : 5;
+            const cost = 1;
             if (currentUser.coins < cost) {
-                alert(`Insufficient coins! You need ${cost} coins. Please top up in your wallet.`);
+                alert(`Insufficient coins! You need ${cost} coin. Please top up in your wallet.`);
                 switchTab('wallet');
                 return;
             }
@@ -312,61 +290,16 @@
             outputContainer.classList.remove('hidden');
 
             const encodedPrompt = encodeURIComponent(prompt);
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
+            
+            outputResult.innerHTML = `
+                <div class="p-4 w-full">
+                    <img src="${imageUrl}" alt="${prompt}" class="max-h-[450px] mx-auto rounded-xl shadow-2xl mb-4 object-contain">
+                    <p class="text-xs text-gray-400 font-mono">Prompt: "${prompt}"</p>
+                </div>
+            `;
 
-            if (currentGenMode === 'image') {
-                const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true`;
-                
-                outputResult.innerHTML = `
-                    <div class="p-4 w-full">
-                        <img src="${imageUrl}" alt="${prompt}" class="max-h-[400px] mx-auto rounded-xl shadow-2xl mb-4 object-contain">
-                        <p class="text-xs text-gray-400 font-mono">Prompt: "${prompt}"</p>
-                    </div>
-                `;
-
-                saveToHistory({ type: 'Image', prompt, url: imageUrl, date: new Date().toLocaleDateString() });
-            } else {
-                // Advanced Cinematic Video Rendering Simulation Engine
-                outputResult.innerHTML = `
-                    <div class="p-8 w-full space-y-4">
-                        <div id="render-steps" class="space-y-2 text-xs font-mono text-cyan-400">
-                            <p class="animate-pulse">⚡ Initializing Neural Video Node...</p>
-                        </div>
-                        <div class="w-full bg-gray-900 rounded-full h-2 border border-gray-800 overflow-hidden">
-                            <div id="render-bar" class="bg-gradient-to-r from-cyan-500 to-purple-600 h-full w-0 transition-all duration-700"></div>
-                        </div>
-                    </div>
-                `;
-
-                setTimeout(() => {
-                    document.getElementById('render-steps').innerHTML = `<p class="text-purple-400">🔍 Analyzing Motion Vectors & Depth Map...</p>`;
-                    document.getElementById('render-bar').style.width = "40%";
-                }, 1000);
-
-                setTimeout(() => {
-                    document.getElementById('render-steps').innerHTML = `<p class="text-cyan-300">🎬 Rendering 60FPS Cinematic Frames...</p>`;
-                    document.getElementById('render-bar').style.width = "80%";
-                }, 2200);
-
-                setTimeout(() => {
-                    const videoThumb = `https://image.pollinations.ai/prompt/cinematic motion video effect, ${encodedPrompt}?width=800&height=450&nologo=true`;
-                    document.getElementById('render-bar').style.width = "100%";
-                    
-                    outputResult.innerHTML = `
-                        <div class="p-4 w-full space-y-4">
-                            <div class="relative rounded-xl overflow-hidden border border-cyan-500/40 shadow-2xl bg-black">
-                                <img src="${videoThumb}" alt="${prompt}" class="w-full max-h-[400px] object-cover mx-auto">
-                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                    <div class="w-14 h-14 rounded-full bg-cyan-500/80 text-gray-950 flex items-center justify-center text-xl font-bold shadow-lg cursor-pointer hover:scale-110 transition-all">▶</div>
-                                </div>
-                                <div class="absolute top-3 left-3 bg-purple-600/90 text-white text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">🎬 MP4 1080p 60FPS</div>
-                            </div>
-                            <p class="text-xs text-gray-400 font-mono">Prompt: "${prompt}"</p>
-                        </div>
-                    `;
-
-                    saveToHistory({ type: 'Video', prompt, url: videoThumb, date: new Date().toLocaleDateString() });
-                }, 3500);
-            }
+            saveToHistory({ type: 'AI Image', prompt, url: imageUrl, date: new Date().toLocaleDateString() });
         }
 
         function saveToHistory(item) {
@@ -397,7 +330,7 @@
 
         function submitDeposit() {
             const txid = document.getElementById('txid-input').value.trim();
-            if (!txid || txid.length < 10) {
+            if (!txid || txid.length < 5) {
                 alert("Please enter a valid Transaction Hash / TxID.");
                 return;
             }
@@ -412,7 +345,7 @@
         function loadGallery() {
             const grid = document.getElementById('gallery-grid');
             if (!currentUser.history || currentUser.history.length === 0) {
-                grid.innerHTML = `<p class="text-xs text-gray-500 col-span-3 text-center py-8">No generations found yet. Go to AI Studio and create something!</p>`;
+                grid.innerHTML = `<p class="text-xs text-gray-500 col-span-3 text-center py-8">No generations found yet. Go to AI Art Studio and create something!</p>`;
                 return;
             }
 
