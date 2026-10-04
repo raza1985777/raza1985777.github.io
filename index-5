@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nexus Studio</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}
+button{background:none;border:0;cursor:pointer;font:inherit;color:inherit}
+.hidden{display:none!important}.flex{display:flex}.grid{display:grid}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.flex-1{flex:1}
+.items-center{align-items:center}.justify-between{justify-content:space-between}.justify-center{justify-content:center}
+.gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.col-span-2{grid-column:span 2}
+.min-h-screen{min-height:100vh}.max-w-3xl{max-width:48rem}.max-w-sm{max-width:24rem}.mx-auto{margin-left:auto;margin-right:auto}.mt-10{margin-top:2.5rem}
+.p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}
+.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.pt-2{padding-top:.5rem}
+.space-y-2>*+*{margin-top:.5rem}.space-y-3>*+*{margin-top:.75rem}.space-y-4>*+*{margin-top:1rem}
+.w-full{width:100%}.w-44{width:11rem}.h-44{height:11rem}.w-auto{width:auto}
+.text-xs{font-size:.75rem}.text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}
+.font-bold{font-weight:700}.font-semibold{font-weight:600}.font-mono{font-family:monospace}
+.break-all{word-break:break-all}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.border{border:1px solid #1f2937}.border-b{border-bottom:1px solid #1f2937}.border-cyan-800{border-color:#155e75}.border-red-900{border-color:#7f1d1d}
+.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-full{border-radius:9999px}
+.text-cyan-400{color:#22d3ee}.text-cyan-300{color:#67e8f9}.text-amber-300{color:#fcd34d}.text-gray-300{color:#d1d5db}.text-gray-400{color:#9ca3af}.text-gray-500{color:#6b7280}.text-red-400{color:#f87171}
+.bg-gray-950{background:#030712}.bg-white{background:#fff}.bg-cyan-950{background:#083344}
+.max-h-\[500px\]{max-height:500px}.inp{font-family:inherit}
+</style>
+<style>body{background:#090d16;color:#f3f4f6;font-family:system-ui,sans-serif}
+.card{background:#111827;border:1px solid #1f2937;border-radius:1rem;padding:1.25rem}
+.inp{width:100%;background:#030712;border:1px solid #1f2937;border-radius:.75rem;padding:.75rem;font-size:.875rem;color:#e5e7eb}
+.inp:focus{outline:none;border-color:#06b6d4}
+.btn{width:100%;padding:.8rem;border-radius:.75rem;font-weight:700;background:linear-gradient(90deg,#06b6d4,#8b5cf6);color:#030712}
+.btn:disabled{opacity:.5}
+.tab{padding:.5rem 1rem;border-radius:.75rem;font-size:.875rem;font-weight:600;background:#111827;border:1px solid #1f2937;color:#d1d5db}
+.tab.on{background:#06b6d4;color:#030712;border-color:#06b6d4}</style>
+</head>
+<body class="min-h-screen">
+
+<script>
+const SUPABASE_URL = "https://hjfyxlatlmufwnnkiolb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_6FvCpw5QKpzF9pzuq1D02w_Odcc-UHE";
+const DEPOSIT_ADDRESS = "TAZdUPxGGBPiyt3LQPQHJdS2gRtVE7uwZs";
+</script>
+
+<header class="flex items-center justify-between px-4 py-3 border-b border-gray-800">
+  <b class="text-cyan-400 text-lg">Nexus Studio</b>
+  <div id="who" class="flex items-center gap-2 text-xs"></div>
+</header>
+
+<main class="max-w-3xl mx-auto p-4 space-y-4">
+
+<section id="v-auth" class="card max-w-sm mx-auto mt-10 space-y-3 hidden">
+  <h2 id="auth-h" class="font-bold text-lg">Sign in</h2>
+  <input id="em" type="email" class="inp" placeholder="Email">
+  <input id="pw" type="password" class="inp" placeholder="Password (min 6 characters)">
+  <button id="auth-btn" class="btn" onclick="auth()">Sign in</button>
+  <button id="auth-sw" class="text-xs text-cyan-400 w-full" onclick="swMode()">New here? Create account</button>
+  <p id="auth-msg" class="text-xs text-amber-300"></p>
+</section>
+
+<div id="v-app" class="hidden space-y-4">
+  <nav class="flex gap-2 flex-wrap justify-center">
+    <button class="tab on" data-t="studio">Create</button>
+    <button class="tab" data-t="wallet">Buy coins</button>
+    <button class="tab" data-t="history">My images</button>
+    <button class="tab hidden" data-t="admin" id="tab-admin">Admin</button>
+  </nav>
+
+  <section id="t-studio" class="card space-y-3">
+    <textarea id="prompt" rows="4" class="inp" placeholder="Describe the photo, e.g. a girl standing next to a horse in a field at sunset"></textarea>
+    <button id="gen-btn" class="btn" onclick="generate()">Create image (1 coin)</button>
+    <p id="gen-msg" class="text-xs text-gray-400"></p>
+    <div id="out" class="flex justify-center"></div>
+    <p class="text-xs text-gray-500">Video generation: coming soon.</p>
+  </section>
+
+  <section id="t-wallet" class="card space-y-3 hidden">
+    <h2 class="font-bold text-cyan-400">Buy coins with USDT</h2>
+    <p class="text-sm text-gray-300">1 USDT = 10 coins. Send USDT on the <b>TRC20 (TRON)</b> network only.</p>
+    <div class="flex flex-col items-center gap-1">
+      <div id="qr" class="bg-white p-2 rounded-xl w-44 h-44"></div>
+      <span class="text-xs text-gray-400">Scan in Binance: USDT, TRON (TRC20)</span>
+    </div>
+    <div class="flex gap-2 items-center bg-gray-950 border border-gray-800 rounded-xl p-3">
+      <code id="addr" class="text-xs text-cyan-300 break-all flex-1"></code>
+      <button class="tab" onclick="navigator.clipboard.writeText(DEPOSIT_ADDRESS);this.textContent='Copied'">Copy</button>
+    </div>
+    <input id="usdt" type="number" min="1" step="0.1" class="inp" placeholder="Amount you sent (USDT)">
+    <input id="txid" class="inp" placeholder="Transaction ID (TxID)">
+    <button class="btn" onclick="deposit()">Submit payment for review</button>
+    <p id="dep-msg" class="text-xs text-amber-300"></p>
+    <h3 class="font-semibold text-sm pt-2">Your payments</h3>
+    <div id="my-deps" class="space-y-2 text-xs"></div>
+  </section>
+
+  <section id="t-history" class="hidden grid grid-cols-2 gap-3"></section>
+
+  <section id="t-admin" class="card space-y-2 hidden">
+    <h2 class="font-bold text-cyan-400">Pending payments</h2>
+    <p class="text-xs text-gray-400">Check the TxID and amount in your Binance deposit history, then approve.</p>
+    <div id="admin-list" class="space-y-2 text-xs"></div>
+  </section>
+</div>
+</main>
+
+<script>
+const sb = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+const $ = id => document.getElementById(id);
+let me = null, signup = false;
+
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+
+async function boot() {
+  if (!sb) { $('v-auth').classList.remove('hidden'); $('auth-msg').textContent = 'Page could not load. Open the website link in Chrome with internet (do not open the downloaded file).'; return; }
+  const { data } = await sb.auth.getSession();
+  await onSession(data.session);
+  sb.auth.onAuthStateChange((_e, s) => onSession(s));
+}
+
+async function onSession(session) {
+  if (!session) { me = null; $('v-app').classList.add('hidden'); $('v-auth').classList.remove('hidden'); $('who').replaceChildren(); return; }
+  await refreshProfile();
+  $('v-auth').classList.add('hidden'); $('v-app').classList.remove('hidden');
+  $('tab-admin').classList.toggle('hidden', !me.is_admin);
+  $('addr').textContent = DEPOSIT_ADDRESS;
+  try { const q = qrcode(0, 'M'); q.addData(DEPOSIT_ADDRESS); q.make(); $('qr').innerHTML = q.createSvgTag({ scalable: true, margin: 0 }); } catch (e) {}
+  drawWho();
+}
+
+async function refreshProfile() {
+  const { data: { user } } = await sb.auth.getUser();
+  const { data } = await sb.from('profiles').select('*').eq('id', user.id).single();
+  me = data; drawWho();
+}
+
+function drawWho() {
+  if (!me) return;
+  const b = el('button', 'text-red-400 border border-red-900 rounded-lg px-2 py-1', 'Logout');
+  b.onclick = () => sb.auth.signOut();
+  $('who').replaceChildren(el('span', 'bg-cyan-950 text-cyan-300 border border-cyan-800 rounded-full px-3 py-1 font-semibold', me.coins + ' coins'), b);
+}
+
+function swMode() {
+  signup = !signup;
+  $('auth-h').textContent = signup ? 'Create account (3 free coins)' : 'Sign in';
+  $('auth-btn').textContent = signup ? 'Create account' : 'Sign in';
+  $('auth-sw').textContent = signup ? 'Already have an account? Sign in' : 'New here? Create account';
+}
+
+async function auth() {
+  const email = $('em').value.trim(), password = $('pw').value;
+  $('auth-msg').textContent = '';
+  const { error, data } = signup ? await sb.auth.signUp({ email, password }) : await sb.auth.signInWithPassword({ email, password });
+  if (error) { $('auth-msg').textContent = error.message; return; }
+  if (signup && !data.session) $('auth-msg').textContent = 'Check your email to confirm your account, then sign in.';
+}
+
+document.querySelectorAll('.tab[data-t]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tab[data-t]').forEach(x => x.classList.toggle('on', x === b));
+  ['studio', 'wallet', 'history', 'admin'].forEach(t => $('t-' + t).classList.toggle('hidden', t !== b.dataset.t));
+  if (b.dataset.t === 'wallet') loadMyDeps();
+  if (b.dataset.t === 'history') loadHistory();
+  if (b.dataset.t === 'admin') loadAdmin();
+});
+
+async function generate() {
+  const p = $('prompt').value.trim(), msg = $('gen-msg');
+  if (!p) { msg.textContent = 'Write a prompt first.'; return; }
+  if (me.coins < 1) { msg.textContent = 'You have no coins. Open "Buy coins".'; return; }
+  $('gen-btn').disabled = true; msg.textContent = 'Creating your image... this can take up to 60 seconds.';
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 120000);
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(SUPABASE_URL + '/functions/v1/dynamic-function', {
+      method: 'POST', signal: ctl.signal,
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token, 'apikey': SUPABASE_KEY },
+      body: JSON.stringify({ prompt: p })
+    });
+    if (!res.ok) { let m = 'Image failed. No coin was used.'; try { m = (await res.json()).error || m; } catch (e) {} throw new Error(m); }
+    const u = URL.createObjectURL(await res.blob());
+    const img = new Image(); img.src = u; img.className = 'rounded-xl max-h-[500px] w-auto';
+    const dl = el('a', 'text-cyan-300 text-sm', 'Download image'); dl.href = u; dl.download = 'nexus-image.jpg';
+    const box = el('div', 'flex flex-col items-center gap-2'); box.append(img, dl);
+    $('out').replaceChildren(box); msg.textContent = 'Done. 1 coin used.'; refreshProfile();
+  } catch (e) {
+    msg.textContent = e.name === 'AbortError' ? 'Timed out. No coin was used. Try again.' : e.message;
+  }
+  clearTimeout(t); $('gen-btn').disabled = false;
+}
+
+async function loadHistory() {
+  const { data } = await sb.from('generations').select('*').order('id', { ascending: false }).limit(50);
+  const box = $('t-history'); box.replaceChildren();
+  if (!data || !data.length) { box.appendChild(el('p', 'text-xs text-gray-500 col-span-2', 'No images yet.')); return; }
+  data.forEach(g => { const d = el('div', 'card p-3 col-span-2'); d.append(el('p', 'text-sm', g.prompt), el('p', 'text-xs text-gray-500', new Date(g.created_at).toLocaleString())); box.appendChild(d); });
+}
+
+async function deposit() {
+  const m = $('dep-msg'), usdt = parseFloat($('usdt').value), txid = $('txid').value.trim();
+  if (!(usdt > 0) || !txid) { m.textContent = 'Enter the amount and TxID.'; return; }
+  const { error } = await sb.rpc('submit_deposit', { p_txid: txid, p_usdt: usdt });
+  if (error) { m.textContent = error.message; return; }
+  m.textContent = 'Submitted. Coins are added after we confirm your payment.';
+  $('txid').value = ''; $('usdt').value = ''; loadMyDeps();
+}
+
+async function loadMyDeps() {
+  const { data } = await sb.from('deposits').select('*').eq('user_id', me.id).order('id', { ascending: false });
+  const box = $('my-deps'); box.replaceChildren();
+  (data || []).forEach(d => box.appendChild(el('div', 'flex justify-between bg-gray-950 rounded-lg p-2', d.usdt + ' USDT - ' + d.status)));
+  refreshProfile();
+}
+
+async function loadAdmin() {
+  const { data } = await sb.from('deposits').select('*').eq('status', 'pending').order('id');
+  const box = $('admin-list'); box.replaceChildren();
+  if (!data || !data.length) { box.appendChild(el('p', 'text-gray-500', 'Nothing pending.')); return; }
+  data.forEach(d => {
+    const row = el('div', 'bg-gray-950 rounded-lg p-3 space-y-2');
+    row.append(el('div', '', d.email + ' - ' + d.usdt + ' USDT (' + Math.floor(d.usdt * 10) + ' coins)'), el('div', 'font-mono break-all text-gray-400', d.txid));
+    const ok = el('button', 'tab', 'Approve'), no = el('button', 'tab', 'Reject');
+    ok.onclick = () => review(d.id, true); no.onclick = () => review(d.id, false);
+    const w = el('div', 'flex gap-2'); w.append(ok, no); row.appendChild(w); box.appendChild(row);
+  });
+}
+async function review(id, approve) {
+  const { error } = await sb.rpc('review_deposit', { p_id: id, p_approve: approve });
+  if (error) alert(error.message);
+  loadAdmin();
+}
+
+boot();
+</script>
+</body>
+</html>
